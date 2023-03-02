@@ -1,5 +1,8 @@
 import React from "react";
 import { Quill } from "react-quill";
+import * as QuillTableUI from 'quill-table-ui'
+
+/* Changing icon https://github.com/zenoamaro/react-quill/issues/188#issuecomment-558237979 */
 
 // Custom Undo button icon component for Quill editor. You can import it directly
 // from 'quill/assets/icons/undo.svg' but I found that a number of loaders do not
@@ -52,6 +55,21 @@ Font.whitelist = [
 Quill.register(Font, true);
 
 
+Quill.register({
+  'modules/tableUI': QuillTableUI.default
+}, true)
+
+window.onload = () => {
+  const quill = new Quill('#editor-wrapper', {
+    theme: 'snow',
+    modules: {
+      table: true,
+      tableUI: true,
+    }
+  })
+}
+
+
 // Modules object for setting up the Quill editor
 export const modules =(props)=>({
   toolbar: {
@@ -88,15 +106,16 @@ export const formats = [
   "image",
   "video",
   "color",
-  "code-block"
+  "code-block", 
+  "table",
+  "tablleUI"
 ];
-
 
 // Quill Toolbar component
 export const QuillToolbar = (props) => {
   return  (<> 
   {props.toolbarId !== undefined && 
-  <div id={props.toolbarId}>
+  <div id={props.toolbarId} className="w-1/2">
     
     <span className="ql-formats">
       <button className="ql-bold" />
@@ -119,7 +138,7 @@ export const QuillToolbar = (props) => {
         <option value="small">Small</option>
         <option value="medium" selected>Medium</option>
         <option value="large">Large</option>
-      </select>
+      </select> 
       <select className="ql-header">
         <option value="1">Heading 1</option>
         <option value="2">Heading 2</option>
@@ -127,7 +146,7 @@ export const QuillToolbar = (props) => {
         <option value="4">Heading 4</option>
         <option value="5">Heading 5</option>
         <option value="6">Heading 6</option>
-        <option value="" selected>Normal</option>
+        <option value="" selected>AA</option>
       </select>
     </span>
     <span className="ql-formats">
@@ -140,7 +159,7 @@ export const QuillToolbar = (props) => {
       <button className="ql-script" value="super" />
       <button className="ql-script" value="sub" />
       <button className="ql-blockquote" />
-      <button className="ql-direction" />
+      {/* <button className="ql-direction" /> */}
     </span>
     <span className="ql-formats">
       <select className="ql-align" />
@@ -150,7 +169,7 @@ export const QuillToolbar = (props) => {
     <span className="ql-formats">
       <button className="ql-link" />
       <button className="ql-image" />
-      <button className="ql-video" />
+      {/* <button className="ql-video" /> */}
     </span>
     <span className="ql-formats">
       <button className="ql-formula" />
